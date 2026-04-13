@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>R.J. College — LMS</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="login-view" class="view" hidden>
+    <div class="login-shell">
+      <div class="login-hero">
+        <p class="login-hero__badge"><span class="login-hero__badge-dot" aria-hidden="true"></span> R.J. College · B.Sc. IT</p>
+        <h1 class="login-hero__title" id="login-hero-title">Welcome to <span>your campus LMS</span></h1>
+        <p class="login-hero__text" id="login-hero-text">
+          Sign in with your college ID and password. Teachers can share notes and request note submissions.
+        </p>
+        <div class="login-hero__facts" id="login-hero-facts" aria-label="College highlights"></div>
+      </div>
+      <main class="auth-card" role="main">
+        <div class="auth-card__brand">
+          <div class="auth-card__logo" id="login-logo" aria-hidden="true">R</div>
+          <div>
+            <h2 class="auth-card__title" id="login-card-title">Student portal</h2>
+            <p class="auth-card__subtitle" id="login-card-subtitle">Secure access to your learning dashboard.</p>
+          </div>
+        </div>
+
+        <div class="role-tabs" role="tablist" aria-label="Login as">
+          <button type="button" class="role-tabs__btn role-tabs__btn--active" id="role-tab-student" role="tab" aria-selected="true">Student</button>
+          <button type="button" class="role-tabs__btn" id="role-tab-teacher" role="tab" aria-selected="false">Teacher</button>
+        </div>
+
+        <p id="login-general-error" class="form-error form-error--general" role="alert" hidden></p>
+        <form id="login-form" class="form" novalidate>
+          <div class="field">
+            <label for="user_id" id="login-user-label">Student ID</label>
+            <input id="user_id" name="user_id" type="text" autocomplete="username" inputmode="numeric" pattern="[0-9]*" placeholder="ID card no. e.g. 240045" />
+            <p id="user_id-error" class="form-error" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" />
+            <p id="password-error" class="form-error" role="alert" hidden></p>
+          </div>
+          <button type="submit" class="btn btn--primary" id="login-submit-btn">Log in to dashboard</button>
+        </form>
+
+        <div class="auth-links">
+          <a href="#" id="link-register" class="auth-links__primary">New student? Register for B.Sc. IT</a>
+          <span class="auth-links__sep" aria-hidden="true">·</span>
+          <a href="#" id="link-register-external" class="auth-links__secondary" hidden target="_blank" rel="noopener noreferrer">Official registration</a>
+        </div>
+
+        <p class="login-footnote" id="login-footnote">
+          Student login = <strong>ID card number</strong> (digits) + password from <code>college-data.js</code>. Teacher uploads stay in this browser only.
+        </p>
+      </main>
+    </div>
+  </div>
+
+  <div id="register-view" class="view" hidden>
+    <div class="register-shell">
+      <div class="register-card">
+        <button type="button" class="btn-text" id="register-back">← Back to login</button>
+        <div class="register-card__head">
+          <div class="register-card__logo" id="register-logo">R</div>
+          <div>
+            <h1 class="register-card__title">B.Sc. IT — New registration</h1>
+            <p class="register-card__sub" id="register-program-label"></p>
+          </div>
+        </div>
+        <p id="register-general-error" class="form-error form-error--general" role="alert" hidden></p>
+        <p id="register-success" class="banner-success" role="status" hidden></p>
+        <form id="register-form" class="form form--register" novalidate>
+          <div class="field-row">
+            <div class="field">
+              <label for="reg_first">First name</label>
+              <input id="reg_first" name="reg_first" type="text" autocomplete="given-name" />
+              <p id="reg_first-error" class="form-error" role="alert" hidden></p>
+            </div>
+            <div class="field">
+              <label for="reg_last">Last name</label>
+              <input id="reg_last" name="reg_last" type="text" autocomplete="family-name" />
+              <p id="reg_last-error" class="form-error" role="alert" hidden></p>
+            </div>
+          </div>
+          <div class="field">
+            <label for="reg_email">Email</label>
+            <input id="reg_email" name="reg_email" type="email" autocomplete="email" />
+            <p id="reg_email-error" class="form-error" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="reg_phone">Phone (optional)</label>
+            <input id="reg_phone" name="reg_phone" type="tel" autocomplete="tel" />
+          </div>
+          <div class="field">
+            <label for="reg_proposed_id">Preferred student ID (proposal)</label>
+            <input id="reg_proposed_id" name="reg_proposed_id" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="ID card no. e.g. 260001" />
+            <p id="reg_proposed_id-error" class="form-error" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="reg_password">Choose password (demo — stored locally only)</label>
+            <input id="reg_password" name="reg_password" type="password" autocomplete="new-password" />
+            <p id="reg_password-error" class="form-error" role="alert" hidden></p>
+          </div>
+          <button type="submit" class="btn btn--primary btn--gold">Submit registration</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="dashboard-view" class="view" hidden>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <div class="site-header__brand">
+          <div class="site-header__logo site-header__logo--student" id="dash-logo" aria-hidden="true">R</div>
+          <div class="site-header__titles">
+            <p class="site-header__college" id="dash-college-name"></p>
+            <p class="site-header__meta" id="dash-college-meta"></p>
+          </div>
+        </div>
+        <span class="portal-pill portal-pill--student">Student</span>
+        <div class="site-header__actions">
+          <div class="user-chip">
+            <span class="user-chip__name" id="welcome-name"></span>
+            <span class="user-chip__detail" id="welcome-detail"></span>
+          </div>
+          <button type="button" id="logout-btn" class="btn btn--ghost">Logout</button>
+        </div>
+      </div>
+    </header>
+    <main class="dashboard" role="main">
+      <aside class="sidebar-card" aria-labelledby="college-sidebar-heading">
+        <h2 id="college-sidebar-heading" class="sidebar-card__title">College profile</h2>
+        <dl id="college-sidebar-dl"></dl>
+      </aside>
+      <div class="dashboard__main">
+        <section class="widget widget--accent" aria-labelledby="notes-lib-heading">
+          <h2 id="notes-lib-heading" class="widget__title">Teacher notes (B.Sc. IT)</h2>
+          <p class="widget__subtitle">Materials uploaded by faculty for your enrolled subjects.</p>
+          <ul id="student-notes-list" class="widget__list"></ul>
+        </section>
+        <section class="widget widget--accent2" aria-labelledby="note-req-heading">
+          <h2 id="note-req-heading" class="widget__title">Submit your notes / files</h2>
+          <p class="widget__subtitle">Tasks from teachers — upload a file name for this demo (no server).</p>
+          <ul id="student-note-requests-list" class="widget__list"></ul>
+        </section>
+        <section class="widget" aria-labelledby="classes-heading">
+          <h2 id="classes-heading" class="widget__title">My courses</h2>
+          <p class="widget__subtitle" id="classes-subtitle"></p>
+          <ul id="classes-list" class="widget__list"></ul>
+        </section>
+        <section class="widget" aria-labelledby="assign-heading">
+          <h2 id="assign-heading" class="widget__title">Pending assignments</h2>
+          <p class="widget__subtitle">Coursework due this semester.</p>
+          <ul id="assignments-list" class="widget__list"></ul>
+        </section>
+        <section class="widget widget--wide" aria-labelledby="due-heading">
+          <h2 id="due-heading" class="widget__title">Upcoming due dates</h2>
+          <p class="widget__hint">Red: due within 24 hours or overdue. Amber: due within 7 days.</p>
+          <ul id="due-dates-list" class="widget__list widget__list--due"></ul>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="teacher-dashboard-view" class="view" hidden>
+    <header class="site-header site-header--teacher">
+      <div class="site-header__inner">
+        <div class="site-header__brand">
+          <div class="site-header__logo site-header__logo--teacher" id="teacher-dash-logo" aria-hidden="true">R</div>
+          <div class="site-header__titles">
+            <p class="site-header__college" id="teacher-dash-college"></p>
+            <p class="site-header__meta">Teacher workspace · Notes & submissions</p>
+          </div>
+        </div>
+        <span class="portal-pill portal-pill--teacher">Teacher</span>
+        <div class="site-header__actions">
+          <div class="user-chip user-chip--teacher">
+            <span class="user-chip__name" id="teacher-welcome-name"></span>
+            <span class="user-chip__detail" id="teacher-welcome-detail"></span>
+          </div>
+          <button type="button" id="teacher-logout-btn" class="btn btn--ghost btn--teacher-ghost">Logout</button>
+        </div>
+      </div>
+    </header>
+    <main class="dashboard dashboard--teacher" role="main">
+      <aside class="sidebar-card sidebar-card--teacher">
+        <h2 class="sidebar-card__title">Your B.Sc. IT courses</h2>
+        <ul id="teacher-courses-list" class="mini-list"></ul>
+        <p class="sidebar-hint">Only courses you teach appear here. Edit <code>teachers</code> in <code>college-data.js</code>.</p>
+      </aside>
+      <div class="dashboard__main dashboard__main--teacher">
+        <section class="widget widget--teacher-panel" aria-labelledby="upload-notes-heading">
+          <h2 id="upload-notes-heading" class="widget__title">Upload notes</h2>
+          <p class="widget__subtitle">Share PDFs or handouts — demo stores title & file name in this browser.</p>
+          <form id="teacher-upload-form" class="form form--compact">
+            <div class="field">
+              <label for="upload-course">Course</label>
+              <select id="upload-course" class="input-select"></select>
+            </div>
+            <div class="field">
+              <label for="upload-title">Note title</label>
+              <input id="upload-title" type="text" placeholder="e.g. Unit 2 — SQL joins" />
+            </div>
+            <div class="field">
+              <label for="upload-file">Attach file (optional)</label>
+              <input id="upload-file" type="file" class="input-file" accept=".pdf,.doc,.docx,.ppt,.pptx,.zip" />
+            </div>
+            <p id="upload-feedback" class="form-hint" role="status"></p>
+            <button type="submit" class="btn btn--primary btn--teacher">Publish note</button>
+          </form>
+        </section>
+        <section class="widget widget--teacher-panel" aria-labelledby="teacher-notes-published-heading">
+          <h2 id="teacher-notes-published-heading" class="widget__title">Your published notes</h2>
+          <ul id="teacher-published-notes" class="widget__list"></ul>
+        </section>
+        <section class="widget widget--teacher-panel widget--wide" aria-labelledby="request-submit-heading">
+          <h2 id="request-submit-heading" class="widget__title">Ask students to submit notes / files</h2>
+          <p class="widget__subtitle">Creates a task visible to B.Sc. IT students enrolled in that course.</p>
+          <form id="teacher-request-form" class="form form--compact form--grid2">
+            <div class="field">
+              <label for="req-course">Course</label>
+              <select id="req-course" class="input-select"></select>
+            </div>
+            <div class="field">
+              <label for="req-due">Due date & time</label>
+              <input id="req-due" type="datetime-local" class="input-select" />
+            </div>
+            <div class="field field--full">
+              <label for="req-title">Task title</label>
+              <input id="req-title" type="text" placeholder="e.g. Submit Unit 4 handwritten notes" />
+            </div>
+            <div class="field field--full">
+              <label for="req-desc">Instructions for students</label>
+              <textarea id="req-desc" class="input-textarea" rows="3" placeholder="Naming, format, group ID…"></textarea>
+            </div>
+            <div class="field field--full">
+              <p id="req-feedback" class="form-hint" role="status"></p>
+              <button type="submit" class="btn btn--primary btn--teacher">Create submission request</button>
+            </div>
+          </form>
+        </section>
+        <section class="widget widget--wide widget--teacher-panel" aria-labelledby="teacher-requests-list-heading">
+          <h2 id="teacher-requests-list-heading" class="widget__title">Active submission requests</h2>
+          <ul id="teacher-requests-list" class="widget__list"></ul>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="college-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
